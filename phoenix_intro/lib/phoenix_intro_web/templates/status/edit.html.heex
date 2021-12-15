@@ -1,0 +1,5 @@
+<%= form_for @conn, Routes.status_path(@conn, :update), [as: :status], fn f -> %>
+  <%= text_input f, :new_status %>
+  <%= hidden_input f, :user_id, value: @user_id %>
+  <%= submit "Update status" %>
+<% end %>

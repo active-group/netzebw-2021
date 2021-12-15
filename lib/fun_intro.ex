@@ -38,10 +38,8 @@ defmodule FunIntro do
 
     @doc """
     Berechnet die Minuten seit Mitternacht
-
       iex> FunIntro.Time.minutes_after_midnight(FunIntro.Time.time1())
       510
-
       iex> FunIntro.Time.minutes_after_midnight(FunIntro.Time.time2())
       0
     """
@@ -56,10 +54,8 @@ defmodule FunIntro do
 
     @doc """
     Erstellt eine Zeit aus den Minuten nach Mitternacht.
-
     iex> FunIntro.Time.time_of_minutes_after_midnight(150)
     %FunIntro.Time{hours: 2, minutes: 30}
-
     iex> minutes_after_midnight = FunIntro.Time.minutes_after_midnight(FunIntro.Time.time2())
     iex> FunIntro.Time.time_of_minutes_after_midnight(minutes_after_midnight)
     FunIntro.Time.time2()
@@ -83,7 +79,6 @@ defmodule FunIntro do
 
 
   defmodule Dillo do
-
     alias __MODULE__
 
     # Ein Gürteltier hat die folgenden Eigenschaften:
@@ -91,9 +86,9 @@ defmodule FunIntro do
     # - Gewicht in g
 
     @type t :: %__MODULE__{
-      alive?: boolean(),
-      weight: pos_integer()
-    }
+            alive?: boolean(),
+            weight: pos_integer()
+          }
 
     defstruct [:alive?, :weight]
 
@@ -127,11 +122,9 @@ defmodule FunIntro do
     end
 
 
-    # TIME: 2h
-
-
     @doc """
     Gibt an, ob ein Wert ein Dillo ist oder nicht.
+    Diese Funktion erfordert pattern-matching
 
     iex> FunIntro.Dillo.dillo?(FunIntro.Parrot.parrot1())
     false
@@ -144,8 +137,8 @@ defmodule FunIntro do
     """
 
     @spec dillo?(any()) :: boolean()
-    def dillo?(maybe_parrot) do
-      case maybe_parrot do
+    def dillo?(maybe_dillo) do
+      case maybe_dillo do
         %Dillo{} -> true
         _ -> false
       end
@@ -178,11 +171,11 @@ defmodule FunIntro do
     """
     alias __MODULE__
 
-
     @type t :: %Parrot{
-      weight: non_neg_integer(),
-      sentence: String.t() # elixir t
-    }
+            weight: non_neg_integer(),
+            # elixir type String.t()
+            sentence: String.t()
+          }
 
     defstruct [:weight, :sentence]
 
@@ -198,7 +191,8 @@ defmodule FunIntro do
 
     @spec parrot2() :: Parrot.t()
     def parrot2() do
-      make(100, "") # toter Papagei
+      # toter Papagei
+      make(100, "")
     end
 
     @doc """
@@ -246,6 +240,7 @@ defmodule FunIntro do
 
     @doc """
     Gibt an, ob ein Wert ein Papagei ist oder nicht.
+    Wir benötigen hier pattern-matching
 
     iex> FunIntro.Parrot.parrot?(FunIntro.Parrot.parrot1())
     true
@@ -265,7 +260,6 @@ defmodule FunIntro do
       end
     end
 
-
     @doc """
     iex> FunIntro.Parrot.feed(FunIntro.Parrot.parrot1, 100)
     %FunIntro.Parrot{sentence: "Arrr!", weight: 200}
@@ -281,9 +275,7 @@ defmodule FunIntro do
         parrot
       end
     end
-
   end
-
 
   defmodule Animal do
     @moduledoc """
@@ -311,7 +303,6 @@ defmodule FunIntro do
     def animal?(maybe_animal) do
       Dillo.dillo?(maybe_animal) || Parrot.parrot?(maybe_animal)
     end
-
 
     @doc """
 
@@ -386,7 +377,6 @@ defmodule FunIntro do
 
     alias __MODULE__
 
-
     defmodule Empty do
       alias __MODULE__
 
@@ -395,7 +385,6 @@ defmodule FunIntro do
 
       def make(), do: %Empty{}
     end
-
 
     defmodule Cons do
       alias __MODULE__
@@ -407,11 +396,12 @@ defmodule FunIntro do
       """
 
       @type t() :: %Cons{
-        first: any(),
-        rest: FunIntro.OurList.t()
-      }
+              first: any(),
+              rest: FunIntro.OurList.t()
+            }
 
       defstruct [:first, :rest]
+
     end
 
     @the_empty Empty.make()
@@ -459,7 +449,6 @@ defmodule FunIntro do
       end
     end
 
-
     @spec multiply_helper(OurList.t()) :: integer()
     def multiply_helper(list) do
       cond do
@@ -467,8 +456,6 @@ defmodule FunIntro do
         empty?(list) -> 1
       end
     end
-
-
 
     @doc """
     Multipliziert die Elemente einer Liste
@@ -485,7 +472,6 @@ defmodule FunIntro do
         empty?(list) -> 0
       end
     end
-
 
     def even?(n), do: rem(n, 2) == 0
 
@@ -510,10 +496,11 @@ defmodule FunIntro do
           else
             rest
           end
-        empty?(list) -> list
+
+        empty?(list) ->
+          list
       end
     end
-
 
     @spec odd?(integer()) :: boolean()
     def odd?(n), do: !even?(n)
@@ -530,10 +517,11 @@ defmodule FunIntro do
           else
             rest
           end
-        empty?(list) -> list
+
+        empty?(list) ->
+          list
       end
     end
-
 
     @doc """
     iex> FunIntro.OurList.filter(FunIntro.OurList.list1(), &FunIntro.OurList.even?/1)
@@ -548,12 +536,15 @@ defmodule FunIntro do
         cons?(list) ->
           first = list.first
           rest = filter(list.rest, pred?)
+
           if pred?.(first) do
             cons(first, rest)
           else
             rest
           end
-        empty?(list) -> list
+
+        empty?(list) ->
+          list
       end
     end
 
@@ -575,6 +566,7 @@ defmodule FunIntro do
           rest = map(list.rest, fun)
 
           OurList.cons(first, rest)
+
         OurList.empty?(list) ->
           list
       end
@@ -582,17 +574,120 @@ defmodule FunIntro do
 
     @doc """
     Hängt zwei Listen aneinander
+
+    iex> FunIntro.OurList.append(FunIntro.OurList.list1(), FunIntro.OurList.list2())
+    FunIntro.OurList.cons(
+      1, FunIntro.OurList.cons(
+        2, FunIntro.OurList.cons(
+          3, FunIntro.OurList.cons(
+            "a", FunIntro.OurList.cons(
+              "b", FunIntro.OurList.cons(
+                "c", FunIntro.OurList.empty()
+                )
+              )
+            )
+          )
+        )
+      )
+
+    iex> FunIntro.OurList.append(FunIntro.OurList.empty(), FunIntro.OurList.empty())
+    FunIntro.OurList.empty()
     """
 
     @spec append(OurList.t(), OurList.t()) :: OurList.t()
     def append(list1, list2) do
-      :not_implemented
+      case list1 do
+        %Empty{} ->
+          list2
+
+        %Cons{first: first, rest: rest} ->
+          cons(first, append(rest, list2))
+      end
+    end
+
+    @doc """
+    Reduziert eine liste auf einen Wert
+
+    iex> FunIntro.OurList.reduce(FunIntro.OurList.list1(), 0, fn a, b -> a + b end)
+    6
+
+    iex> FunIntro.OurList.reduce(FunIntro.OurList.list1(), 1, fn a, b -> a * b end)
+    6
+
+    iex> FunIntro.OurList.reduce(FunIntro.OurList.list2(), "", fn a, b -> b <> a end)
+    "abc"
+    """
+
+    @spec reduce(OurList.t(), any(), (any(), any() -> any())) :: any()
+    def reduce(list, value, foo) do
+      cond do
+        cons?(list) ->
+          first = list.first
+          rest = list.rest
+
+          next_value = foo.(first, value)
+          reduce(rest, next_value, foo)
+
+        empty?(list) ->
+          value
+      end
+    end
+
+    @spec reverse(OurList.t()) :: OurList.t()
+    def reverse(list) do
+      reduce(list, empty(), &cons/2)
+    end
+
+    @doc """
+    iex> FunIntro.OurList.map_with_reduce(FunIntro.OurList.list1(), fn a -> a + 1 end)
+    FunIntro.OurList.cons(
+      2, FunIntro.OurList.cons(
+        3, FunIntro.OurList.cons(
+          4, FunIntro.OurList.empty()
+        )
+      )
+    )
+    """
+    @spec map_with_reduce(OurList.t(), (any() -> any())) :: OurList.t()
+    def map_with_reduce(list, foo) do
+      foo_and_cons = fn el, list ->
+        cons(foo.(el), list)
+      end
+
+      reduce(list, empty(), foo_and_cons)
+      |> reverse()
+    end
+
+    @doc """
+    iex> FunIntro.OurList.filter_with_reduce(FunIntro.OurList.list1(), &FunIntro.OurList.odd?/1)
+    FunIntro.OurList.cons(
+      1, FunIntro.OurList.cons(
+        3, FunIntro.OurList.empty()
+      )
+    )
+
+    iex> FunIntro.OurList.filter_with_reduce(FunIntro.OurList.list1(), &FunIntro.OurList.even?/1)
+    FunIntro.OurList.cons(
+      2, FunIntro.OurList.empty()
+    )
+    """
+
+    @spec filter_with_reduce(OurList.t(), (any() -> boolean())) :: OurList.t()
+    def filter_with_reduce(list, pred?) do
+      filter_cons = fn el, list ->
+        if pred?.(el) do
+          cons(el, list)
+        else
+          list
+        end
+      end
+
+      reduce(list, empty(), filter_cons)
+      |> reverse()
     end
   end
 
-
   defmodule Highway do
-
     alias __MODULE__
 
     @moduledoc """
@@ -675,7 +770,6 @@ defmodule FunIntro do
       OurList.filter(highway, &Animal.alive?/1)
     end
 
-
     @doc """
     Überfährt alle Tiere auf dem Highway
 
@@ -692,6 +786,7 @@ defmodule FunIntro do
           rest = run_over_animals(highway.rest)
 
           OurList.cons(first, rest)
+
         OurList.empty?(highway) ->
           highway
       end
@@ -700,7 +795,6 @@ defmodule FunIntro do
     def run_over_animals_with_map(highway) do
       OurList.map(highway, &Animal.run_over/1)
     end
-
 
     @doc """
     Füttert alle Tiere auf dem Highway
@@ -715,11 +809,11 @@ defmodule FunIntro do
           rest = feed_animals(highway.rest, grams)
 
           OurList.cons(first, rest)
+
         OurList.empty?(highway) ->
           highway
       end
     end
-
 
     def feed_animals_with_map(highway, grams) do
       f = fn animal -> Animal.feed(animal, grams) end
@@ -738,5 +832,89 @@ defmodule FunIntro do
       |> OurList.sum()
     end
 
+    # TODO:
+    # Sum all weights with reduce!
+
+    def sum_of_animal_weight_with_reduce(highway) do
+      OurList.reduce(highway, 0, fn animal, acc -> acc + animal.weight end)
+    end
+
+    def combine(highway1, highway2) do
+      OurList.append(highway1, highway2)
+    end
+
+    def empty_highway(), do: OurList.empty()
+
   end
+
+
+  # Protokolle
+
+  defimpl Enumerable, for: OurList.Cons do
+    @moduledoc """
+    Implementiert Enumerable für unsere Listen
+    """
+
+    @impl Enumerable
+    def count(_), do: {:error, __MODULE__}
+
+    @impl Enumerable
+    def member?(_, _), do: {:error, __MODULE__}
+
+    @impl Enumerable
+    def slice(_), do: {:error, __MODULE__}
+
+
+    @impl Enumerable
+    def reduce(list, {:cont, acc}, fun), do: {:done, OurList.reduce(list, acc, fun)}
+    def reduce(_list, {:halt, acc}, _fun), do: {:halted, acc}
+    def reduce(_list, {:suspend, acc}, _fun), do: {:suspended, acc}
+  end
+
+
+  defmodule TypesModule do
+
+    def type_of(term) do
+      cond do
+          is_atom(term) -> "atom"
+          is_boolean(term) -> "boolean"
+          is_function(term) -> "function"
+          is_list(term) -> "list"
+          is_map(term) -> "map"
+          is_nil(term) -> "nil"
+          is_pid(term) -> "pid"
+          is_port(term) -> "port"
+          is_reference(term) -> "reference"
+          is_tuple(term) -> "tuple"
+          is_binary(term) -> "binary"
+          is_bitstring(term) -> "bitstring"
+          true -> :error
+      end
+    end
+
+  end
+
+  defprotocol Types do
+    @fallback_to_any true
+    @spec type_of(any()) :: String.t()
+    def type_of(value)
+  end
+
+  defimpl Types, for: Any do
+    def type_of(value), do: TypesModule.type_of(value)
+  end
+
+  defimpl Types, for: Integer do
+    def type_of(_value), do: "integer"
+  end
+
+  defimpl Types, for: Atom do
+    def type_of(_value), do: "atom"
+  end
+
+  defimpl Types, for: Dillo do
+    def type_of(_value), do: "dillo"
+  end
+
+
 end
